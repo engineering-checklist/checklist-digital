@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checklist Weekly Pallet Mover - Minggu 1</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      text-align: left;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    textarea {
+      width: 100%;
+      height: 40px;
+    }
+    input[type="text"], input[type="month"], input[type="datetime-local"] {
+      width: 100%;
+      padding: 6px;
+    }
+    .section {
+      margin-top: 30px;
+    }
+    .button {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Checklist Weekly Pallet Mover - Minggu 1</h1>
+
+  <div class="section">
+    <label>No. Unit / Merek: <input type="text" id="unit"></label><br>
+    <label>Bulan: <input type="month" id="bulan"></label><br>
+    <label>Branch: <input type="text" id="branch"></label><br>
+    <label>Tanggal (DD): <input type="text" id="tanggal" maxlength="2" size="2"></label><br>
+    <label>H1 (Hour Meter): <input type="text" id="hourMeter"></label>
+  </div>
+
+  <div class="section">
+    <table id="checklist-table">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Jenis Pekerjaan</th>
+          <th>Checklist (✓)</th>
+          <th>Keterangan</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>ACC oleh Role Aktif</h3>
+    <label>Nama: <input type="text" id="nama"></label><br>
+    <label>Jabatan: <input type="text" id="jabatan"></label><br>
+    <label>Tanggal ACC: <input type="datetime-local" id="tanggalAcc"></label>
+
+    <p><strong>ACC:</strong><br>
+      <div id="acc-preview" style="white-space:pre-line; background:#f9f9f9; padding:10px;"></div>
+    </p>
+  </div>
+
+  <div class="button">
+    <button onclick="simpanData()">💾 Simpan & Kirim Email</button>
+  </div>
+
+  <script>
+    const pekerjaan = [
+      "Cleaning Handle Operation",
+      "Cleaning Access Modul Room",
+      "Cleaning Cooler Fan Access",
+      "Distribution Panel",
+      "Clean & Check Motor Traction - Mounting secure",
+      "Clean & Check Motor Traction - Cable connection",
+      "Clean & Check Motor Traction - Brushes & Armatures Condition",
+      "Clean & Check Motor Traction - Brake pad condition",
+      "Clean & Check Motor Pump - Mounting secure",
+      "Clean & Check Motor Pump - Cable connection",
+      "Clean & Check Motor Pump - Brushes & Armatures Condition",
+      "Wheel (Roda) Cleaning"
+    ];
+
+    const tbody = document.querySelector("#checklist-table tbody");
+    pekerjaan.forEach((p, i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${i + 1}</td>
+        <td>${p}</td>
+        <td><input type="checkbox" id="cek${i}"></td>
+        <td><textarea id="ket${i}"></textarea></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    function simpanData() {
+      const acc = `${document.getElementById("nama").value}
+${document.getElementById("jabatan").value}
+${formatTanggal(document.getElementById("tanggalAcc").value)}`;
+      document.getElementById("acc-preview").innerText = acc;
+      alert("Data disimpan dan email akan dikirim ke role berikutnya (simulasi)");
+    }
+
+    function formatTanggal(str) {
+      if (!str) return "";
+      const [tanggal, waktu] = str.split("T");
+      const [yyyy, mm, dd] = tanggal.split("-");
+      return `${dd}-${mm}-${yyyy.slice(2)} ${waktu}`;
+    }
+  </script>
+</body>
+</html>
